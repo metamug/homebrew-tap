@@ -17,7 +17,10 @@ jobs:
       - name: Style and policy checks
         run: |
           brew tap-new --no-git local/test
-          cp Casks/plunger.rb "$(brew --repository local/test)/Casks/plunger.rb"
+          dir="$(brew --repository local/test)"
+          mkdir -p "$dir/Casks"
+          cp Casks/plunger.rb "$dir/Casks/plunger.rb"
+          # advisory: an unsigned app is not what Homebrew's own cask repository accepts, and this is a tap
           brew style --cask local/test/plunger || true
           brew audit --cask --online local/test/plunger || true
 
