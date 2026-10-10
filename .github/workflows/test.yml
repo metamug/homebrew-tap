@@ -23,6 +23,8 @@ jobs:
           # advisory: an unsigned app is not what Homebrew's own cask repository accepts, and this is a tap
           brew style --cask local/test/plunger || true
           brew audit --cask --online local/test/plunger || true
+          # the scratch tap has done its job; leaving it would make the name ambiguous below
+          brew untap local/test
 
       - name: Install it the way a user would
         run: |
@@ -36,4 +38,4 @@ jobs:
           PLUNGER_DATA_DIR="$(mktemp -d)" plunger vars | head -3
 
       - name: Uninstall cleanly
-        run: brew uninstall --cask plunger
+        run: brew uninstall --cask metamug/tap/plunger
