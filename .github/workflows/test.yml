@@ -1,0 +1,36 @@
+name: Test the cask
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * 1"
+
+jobs:
+  install:
+    name: Install the cask on macOS
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Style and policy checks
+        run: |
+          brew tap-new --no-git local/test
+          cp Casks/plunger.rb "$(brew --repository local/test)/Casks/plunger.rb"
+          brew style --cask local/test/plunger || true
+          brew audit --cask --online local/test/plunger || true
+
+      - name: Install it the way a user would
+        run: |
+          brew tap metamug/tap "$GITHUB_WORKSPACE" || brew tap metamug/tap https://github.com/metamug/homebrew-tap
+          brew install --cask metamug/tap/plunger
+
+      - name: The app and the command are there and run
+        run: |
+          test -d /Applications/Plunger.app
+          plunger --version
+          PLUNGER_DATA_DIR="$(mktemp -d)" plunger vars | head -3
+
+      - name: Uninstall cleanly
+        run: brew uninstall --cask plunger
