@@ -1,6 +1,6 @@
 cask "plunger" do
-  version "0.6.0"
-  sha256 "50430dbb483f348c50d39a7c1a917f8b6a9dd2191995440d0bdb476d6af3cebe"
+  version "0.7.0"
+  sha256 "65154f88724cb1cc0058ac6a0b5e0ff02295f180e67a14fb61867efa41c76eb6"
 
   url "https://github.com/metamug/plunger/releases/download/v#{version}/Plunger-#{version}-macos.dmg"
   name "Plunger"
